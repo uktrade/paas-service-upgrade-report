@@ -71,9 +71,9 @@ if __name__ == '__main__':
 
     proxy = dict(http=os.environ.get('HTTP_PROXY', ''), https=os.environ.get('HTTPS_PROXY', ''))
 
-    if os.environ.get("USERNAME"):
-        client = CloudFoundryClient()
-        client.init_with_user_credentials(os.environ["USERNAME"], os.environ["PASSWORD"])
+    if os.environ.get("CF_USERNAME"):
+        client = CloudFoundryClient(target_endpoint=os.environ["CF_DOMAIN"])
+        client.init_with_user_credentials(os.environ["CF_USERNAME"], os.environ["CF_PASSWORD"])
     else:
         # Run using cf cli auth
         client = CloudFoundryClient.build_from_cf_config()

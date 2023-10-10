@@ -1,0 +1,9 @@
+services:
+  paas_audit_report:
+    image: python:3.11
+    container_name: paas_audit
+    hostname: paas_audit
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true

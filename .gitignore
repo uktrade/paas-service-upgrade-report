@@ -26,3 +26,5 @@ src/
 .pytest_cache/
 
 /config/google_credentials.json
+
+**/*.csv

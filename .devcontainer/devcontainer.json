@@ -1,0 +1,65 @@
+{
+  "dockerComposeFile": "compose.yaml",
+  "service": "paas_audit_report",
+  "workspaceFolder": "/vscode/workspace",
+
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/vscode/workspace,type=bind"
+  ],
+
+  "onCreateCommand": ["/bin/bash", "-c", "source .devcontainer/on-create.sh"],
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+		"streetsidesoftware.code-spell-checker",
+		"esbenp.prettier-vscode",
+		"eamodio.gitlens",
+		"codezombiech.gitignore",
+		"fabiospampinato.vscode-diff",
+		"ms-python.python",
+		"ms-python.isort",
+		"ms-python.vscode-pylance",
+		"ms-python.pylint",
+		"DavidAnson.vscode-markdownlint",
+		"shd101wyy.markdown-preview-enhanced",
+		"ms-python.black-formatter",
+		"GrapeCity.gc-excelviewer"
+	],
+      "settings": {
+        "[markdown]": {
+          "editor.codeActionsOnSave": {
+            "source.fixAll.markdownlint": true
+          },
+          "editor.formatOnPaste": true,
+          "editor.formatOnSave": true
+        },
+        "[python]": {
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+          },
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnPaste": false,
+          "editor.formatOnSave": true
+        },
+        "breadcrumbs.enabled": false,
+        "cSpell.language": "en-GB",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.minimap.enabled": false,
+        "editor.tabCompletion": "on",
+        "files.exclude": {
+          "**/.DS_Store": true,
+          "**/.git": true,
+          "**/Thumbs.db": true
+        },
+        "files.trimTrailingWhitespace": true,
+        "git.autofetch": true,
+        "isort.args": ["--profile", "black"],
+        "python.languageServer": "Pylance",
+        "python.terminal.activateEnvironment": false
+      }
+    }
+  }
+}

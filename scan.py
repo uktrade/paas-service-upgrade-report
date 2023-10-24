@@ -18,8 +18,9 @@ GENERATE_CSV = os.getenv("GENERATE_CSV", "False").lower() in ("true", "yes", "y"
 
 def send_slack_message(header, data):
     slack_message = []
-    section_text = f"```Total: {len(data)}\n"
+    section_text = f"```"
 
+    data_size = len(data)
     while data:
         while len(section_text) < 2920 and data:
             content = data.pop()
@@ -41,6 +42,14 @@ def send_slack_message(header, data):
 
         header = "-"
         section_text = "```"
+
+    # append total at the bottom
+    slack_message.append(
+        {
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"```Total:{data_size}```"},
+        }
+    )
 
     payload = json.dumps(
         {
@@ -64,10 +73,17 @@ def _scan_cflinuxfs(client):
     for org in client.v2.organizations:
         for space in org.spaces():
             for app in space.apps():
+                # do not account for stopped and temporary conduit apps
+                if (
+                    app["entity"]["state"] == "STOPPED"
+                    or "conduit" in app["entity"]["name"]
+                ):
+                    continue
+
                 stack_info = json.loads(
                     client.get(
                         url=f'{os.environ["CF_DOMAIN"]}{app["entity"]["stack_url"]}'
-                    )._content
+                    ).text
                 )
                 cflinuxfs_name = stack_info["entity"]["name"]
 

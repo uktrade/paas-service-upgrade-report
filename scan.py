@@ -73,6 +73,10 @@ def _scan_cflinuxfs(client):
     for org in client.v2.organizations:
         for space in org.spaces():
             for app in space.apps():
+                # do not account for 0 instance
+                if app["entity"]["instances"] == 0:
+                    continue
+
                 # do not account for stopped and temporary conduit apps
                 if (
                     app["entity"]["state"] == "STOPPED"

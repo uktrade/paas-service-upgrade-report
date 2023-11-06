@@ -80,6 +80,10 @@ def _scan_cflinuxfs(client):
                 ):
                     continue
 
+                # do not account for docker images
+                if app["entity"]["docker_image"]:
+                    continue
+
                 stack_info = json.loads(
                     client.get(
                         url=f'{os.environ["CF_DOMAIN"]}{app["entity"]["stack_url"]}'
@@ -227,6 +231,7 @@ if __name__ == "__main__":
 
         if SCAN_CFLINUX:
             cflinux_list = _scan_cflinuxfs(client=client)
+
             send_slack_message(header="CFLinux report", data=cflinux_list)
 
             if GENERATE_CSV:

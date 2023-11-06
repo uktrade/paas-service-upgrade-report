@@ -73,11 +73,19 @@ def _scan_cflinuxfs(client):
     for org in client.v2.organizations:
         for space in org.spaces():
             for app in space.apps():
+                # do not account for 0 instance
+                if app["entity"]["instances"] == 0:
+                    continue
+
                 # do not account for stopped and temporary conduit apps
                 if (
                     app["entity"]["state"] == "STOPPED"
                     or "conduit" in app["entity"]["name"]
                 ):
+                    continue
+
+                # do not account for docker images
+                if app["entity"]["docker_image"]:
                     continue
 
                 stack_info = json.loads(
@@ -227,6 +235,7 @@ if __name__ == "__main__":
 
         if SCAN_CFLINUX:
             cflinux_list = _scan_cflinuxfs(client=client)
+
             send_slack_message(header="CFLinux report", data=cflinux_list)
 
             if GENERATE_CSV:
